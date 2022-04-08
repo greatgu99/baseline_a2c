@@ -1,0 +1,7 @@
+INFO:root:1   symptom@@@Fever
+INFO:root:1   symptom@@@Breast tenderness
+INFO:root:1   symptom@@@Diplopia
+INFO:root:1   symptom@@@Difficulty breathing
+INFO:root:1   symptom@@@Stomach ache
+INFO:root:1   symptom@@@Mild thyroid enlargement
+INFO:root:1   disease@@@Coronary heart disease
