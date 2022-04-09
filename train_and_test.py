@@ -18,6 +18,7 @@ from Collect import MyCollector
 from A2C import MyA2CPolicy
 from Policy import Myonpolicy_trainer
 import time
+import copy
 from Utils import *
 def get_args():
     parser = argparse.ArgumentParser()
@@ -125,9 +126,10 @@ def test_a2c(args=get_args()):
     return result
 
 
-def reload(args=get_args()):
+def reload(data):
+    args=get_args()
     slot_set = []
-    with open('./dataset/slot_set.txt', 'r', encoding='utf-8') as f:
+    with open('/root/baseline_a2c/dataset/slot_set.txt', 'r', encoding='utf-8') as f:
         for line in f.readlines():
             slot_set.append(line.strip())
     # slot_set =
@@ -136,11 +138,12 @@ def reload(args=get_args()):
     #     goals['test'] = pickle.load(f)
     # goals = {}
     goals['test']=[]
-    goals['test'].append({'explicit_inform_slots': {'Burning sensation behind the breastbone': True}, 'implicit_inform_slots': {}, 'disease_tag': 'Esophagitis'})
-    goals['test'].append({'explicit_inform_slots': {'Burning sensation behind the breastbone': True}, 'implicit_inform_slots': {'Fever':False}, 'disease_tag': 'Esophagitis'})
-    goals['test'].append({'explicit_inform_slots': {'Burning sensation behind the breastbone': True}, 'implicit_inform_slots': {'Fever':False,'Diplopia':False}, 'disease_tag': 'Esophagitis'})
-    goals['test'].append({'explicit_inform_slots': {'Burning sensation behind the breastbone': True}, 'implicit_inform_slots': {'Fever':False,'Diplopia':False,'Breast tenderness':False}, 'disease_tag': 'Esophagitis'})
-    goals['test'].append({'explicit_inform_slots': {'Burning sensation behind the breastbone': True}, 'implicit_inform_slots': {'Fever':False,'Diplopia':False,'Breast tenderness':False,'Stomach ache':False}, 'disease_tag': 'Esophagitis'})
+#    goals['test'].append({'explicit_inform_slots': {'Burning sensation behind the breastbone': True}, 'implicit_inform_slots': {}, 'disease_tag': 'Esophagitis'})
+    goals['test'].append(copy.deepcopy(data))
+#    goals['test'].append({'explicit_inform_slots': {'Burning sensation behind the breastbone': True}, 'implicit_inform_slots': {'Fever':False}, 'disease_tag': 'Esophagitis'})
+#    goals['test'].append({'explicit_inform_slots': {'Burning sensation behind the breastbone': True}, 'implicit_inform_slots': {'Fever':False,'Diplopia':False}, 'disease_tag': 'Esophagitis'})
+#    goals['test'].append({'explicit_inform_slots': {'Burning sensation behind the breastbone': True}, 'implicit_inform_slots': {'Fever':False,'Diplopia':False,'Breast tenderness':False}, 'disease_tag': 'Esophagitis'})
+#    goals['test'].append({'explicit_inform_slots': {'Burning sensation behind the breastbone': True}, 'implicit_inform_slots': {'Fever':False,'Diplopia':False,'Breast tenderness':False,'Stomach ache':False}, 'disease_tag': 'Esophagitis'})
     # goals['test'].append({'explicit_inform_slots': {'Chest tightness': True}, 'implicit_inform_slots': {'Expectoration': True, 'Bloating': True, 'Acid reflux': True, 'Pain behind the breastbone': True, 'Shortness of breath': True}, 'disease_tag': 'Esophagitis'})
     # goals['test'].append({'explicit_inform_slots': {'Nausea': True, 'Diarrhea': True}, 'implicit_inform_slots': {'Hematemesis': False}, 'disease_tag': 'Esophagitis'})
     # goals['test'].append({'explicit_inform_slots': {'Chest tightness': True, 'Stomach ache': False}, 'implicit_inform_slots': {'Fever': False, 'Cough': False, 'Pain behind the breastbone': True}, 'disease_tag': 'Esophagitis'})
@@ -154,7 +157,7 @@ def reload(args=get_args()):
     #     dic['disease_tag'] = 'Esophagitis'
 
     total_disease = []
-    with open('./dataset/disease.txt', 'r', encoding='utf-8') as f:
+    with open('/root/baseline_a2c/dataset/disease.txt', 'r', encoding='utf-8') as f:
         for line in f.readlines():
             total_disease.append(line.strip())
     print(len(slot_set), slot_set)
@@ -172,7 +175,7 @@ def reload(args=get_args()):
     torch.manual_seed(args.seed)
     test_envs.seed(args.seed)
     random.seed(args.seed)
-    policy = torch.load('./model/ehr/policy.pth')
+    policy = torch.load('/root/baseline_a2c/model/ehr/policy.pth')
     test_collector = MyCollector(policy, test_envs)
     result = test_episode(policy, test_collector, test_fn=None, epoch=1,
                  n_episode=len(goals['test']), writer=None)
@@ -181,4 +184,10 @@ def reload(args=get_args()):
 
 if __name__ == '__main__':
     # test_a2c()
-    reload()
+    # reload()
+    f = open("dataInput.txt","r")
+    a = f.readline()
+    f.close()
+    a = eval(a)
+    reload(copy.deepcopy(a))
+#    reload({'explicit_inform_slots': {'Burning sensation behind the breastbone': True}, 'implicit_inform_slots': {}, 'disease_tag': 'Esophagitis'})

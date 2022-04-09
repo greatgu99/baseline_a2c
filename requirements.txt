@@ -18,9 +18,6 @@ lazy-object-proxy==1.4.3
 llvmlite==0.38.0
 Markdown==3.3.6
 mccabe==0.6.1
-mkl-fft==1.0.15
-mkl-random==1.1.0
-mkl-service==2.3.0
 numba==0.55.1
 numpy==1.18.0
 oauthlib==3.2.0
@@ -40,7 +37,7 @@ tensorboard-data-server==0.6.1
 tensorboard-plugin-wit==1.8.1
 tianshou==0.3.0
 toml==0.10.2
-torch==1.4.0+cu92
+torch==1.4.0
 torchvision==0.4.2
 tqdm==4.63.0
 typed-ast==1.4.1
